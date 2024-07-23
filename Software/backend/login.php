@@ -1,5 +1,5 @@
 <?php
-include 'config.php';
+include 'config.php'; //contains OpenAuth credentials
 require '../vendor/autoload.php';
 
 use League\OAuth2\Client\Provider\Google; 
