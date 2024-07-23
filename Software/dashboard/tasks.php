@@ -11,6 +11,23 @@ include '../backend/db.php';
 $userId = $_SESSION['user_id'];
 $accountType = $_SESSION['account_type'];
 
+//Delet a task
+if (isset($_GET['delete_task']) && $_GET['delete_task'] === 'true' && isset($_GET['task_id'])) {
+    $taskId = $_GET['task_id'];
+
+    // Delete the task
+    $deleteQuery = "DELETE FROM tasks WHERE id = ?";
+    $stmt = $mysqli->prepare($deleteQuery);
+    $stmt->bind_param('i', $taskId);
+    $stmt->execute();
+    $stmt->close();
+
+    // Redirect to tasks.php
+    header('Location: tasks.php?task_deleted=true');
+    exit;
+}
+
+
 $searchQuery = '';
 if (isset($_GET['search'])) {
     $searchQuery = $_GET['search'];
@@ -121,6 +138,14 @@ $mysqli->close();
                             <strong>Success!</strong> Task was updated succsessfully.
                           </div>'; 
                         }
+                        else if(isset($_GET['task_deleted']))
+                        {
+                            echo  '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <strong>Success!</strong> Task was deleted succsessfully.
+                          </div>'; 
+                        }
+
+                        
                         ?>
                         <table class="table table-hover table-nowrap">
                             <thead class="thead-light">
