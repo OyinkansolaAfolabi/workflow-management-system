@@ -93,6 +93,12 @@ $mysqli->close();
                 <div class="card shadow border-0 mb-7">
                     <div class="card-header">
                         <h5 class="mb-0">Tasks</h5>
+                        <a href="create_task.php" class="btn d-inline-flex btn-sm btn-primary mx-1" style="float:right;">
+                                    <span class=" pe-2">
+                                        <i class="bi bi-plus"></i>
+                                    </span>
+                                    <span>Create task</span>
+                                </a>
                     </div>
                     <form method="GET" action="" style="max-width:400px;">
     <div class="input-group mb-3">
@@ -100,7 +106,22 @@ $mysqli->close();
         <button class="btn btn-primary" type="submit">Search</button>
     </div>
 </form>
+
                     <div class="table-responsive">
+                        <?php
+                        if(isset($_GET['tast_created']))
+                        {
+                            echo  '<div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <strong>Success!</strong> Task created succsessfully.
+                          </div>';
+                        }
+                        else if(isset($_GET['task_updated']))
+                        {
+                            echo  '<div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <strong>Success!</strong> Task was updated succsessfully.
+                          </div>'; 
+                        }
+                        ?>
                         <table class="table table-hover table-nowrap">
                             <thead class="thead-light">
                                 <tr>
@@ -125,19 +146,34 @@ $mysqli->close();
                             <td><?php echo htmlspecialchars($task['review_date']); ?></td>
                             <td><?php echo htmlspecialchars($task['status']); ?></td>
                             <td>
-                            <a href="task-updates?task_id=<?php echo$task['id'];?>" class="btn d-inline-flex btn-sm btn-neutral border-base mx-1">
+                            <a href="task_update.php?task_id=<?php echo$task['id'];?>" class="btn d-inline-flex btn-sm btn-neutral border-base mx-1">
                                     <span class=" pe-2">
                                         <i class="bi bi-pen"></i>
                                     </span>
-                                    <span>Update task</span>
+                                    <span>Update</span>
                                 </a>
                                &nbsp;     
-                            <a href="task-progress-updates?task_id=<?php echo$task['id'];?>" class="btn d-inline-flex btn-sm btn-neutral border-base mx-1">
+                            <a href="task-progress-updates?task_id=<?php echo $task['id'];?>" class="btn d-inline-flex btn-sm btn-neutral border-base mx-1">
                                     <span class=" pe-2">
                                         <i class="bi bi-eye"></i>
                                     </span>
                                     <span>View progress updates</span>
                                 </a>
+                      
+                                <?php
+                                    if($accountType ==  'supervisor')
+                                    {
+                                    ?>
+                                     <a href="?delete_task=true&task_id=<?php echo $task['id'];?>" class="btn d-inline-flex btn-sm btn-danger border-base mx-1">
+                                    <span class=" pe-2">
+                                        <i class="bi bi-trash"></i>
+                                    </span>
+                                    <span>Delete</span>
+                                </a>
+                                    <?php
+                                    }
+                                    ?>
+                          
                             </td>
                                   
                                 </tr>
