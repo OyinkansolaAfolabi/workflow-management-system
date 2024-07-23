@@ -178,7 +178,7 @@ $mysqli->close();
                                     <span>Update</span>
                                 </a>
                                &nbsp;     
-                            <a href="task-progress-updates?task_id=<?php echo $task['id'];?>" class="btn d-inline-flex btn-sm btn-neutral border-base mx-1">
+                            <a href="task-progress-updates.php?task_id=<?php echo $task['id'];?>" class="btn d-inline-flex btn-sm btn-neutral border-base mx-1">
                                     <span class=" pe-2">
                                         <i class="bi bi-eye"></i>
                                     </span>
