@@ -6,7 +6,8 @@ if (!isset($_SESSION['user'])) {
     header('Location: login.php');
     exit;
 }
-
+$userId = $_SESSION['user_id'];
+$accountType = $_SESSION['account_type'];
 include '../backend/db.php';
 // Fetch all users
 $result = $mysqli->query("SELECT * FROM users");

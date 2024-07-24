@@ -164,12 +164,18 @@ $mysqli->close();
                         </form>   
 </div>
 <div class="col-6">
+    <?php
+    if ($accountType === 'supervisor') {
+    ?>
     <a href="create_task.php" class="btn d-inline-flex btn-sm btn-primary mx-1" style="float:right;">
                             <span class="pe-2">
                                 <i class="bi bi-plus"></i>
                             </span>
                             <span>Create task</span>
                         </a>
+                        <?php
+                        }
+                        ?>
                         <a href="export_tasks.php?search=<?php echo htmlspecialchars($searchQuery); ?>&status=<?php echo htmlspecialchars($statusFilter); ?>&due_date=<?php echo htmlspecialchars($dueDateOrder); ?>" class="btn d-inline-flex btn-sm btn-success mx-1" style="float:right;">
                             <span class="pe-2">
                                 <i class="bi bi-file-earmark-spreadsheet"></i>
@@ -222,6 +228,7 @@ $mysqli->close();
                                                 </span>
                                                 <span>Update</span>
                                             </a>
+                                           
                                             <a href="task-progress-updates.php?task_id=<?php echo $task['id']; ?>" class="btn d-inline-flex btn-sm btn-neutral border-base mx-1">
                                                 <span class="pe-2">
                                                     <i class="bi bi-eye"></i>

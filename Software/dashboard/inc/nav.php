@@ -28,11 +28,17 @@
                             <i class="bi bi-house"></i> Dashboard
                         </a>
                     </li>
+                    <?php
+                    if ($accountType === 'supervisor') {
+                    ?>
                     <li class="nav-item">
                         <a class="nav-link" href="users.php">
                             <i class="bi bi-people"></i> Users
                         </a>
                     </li>
+                    <?php
+                    }
+                    ?>
                     <li class="nav-item">
                         <a class="nav-link" href="tasks.php">
                             <i class="bi bi-list"></i> Tasks

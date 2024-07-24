@@ -163,6 +163,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['user_id'])) {
                                 <label for="review_date">Review Date</label>
                                 <input type="date" class="form-control" id="review_date" name="review_date" value="<?php echo htmlspecialchars($task['review_date']); ?>" <?php if ($task['status'] === 'Closed') echo 'disabled'; ?>>
                             </div>
+                            <?php
+                    if ($accountType === 'supervisor') {
+                    ?>
                             <div class="form-group">
                                 <label for="assigned_users">Assign to Users</label>
                                 <select multiple class="form-control" id="assigned_users" name="assigned_users[]" required  <?php if ($task['status'] === 'Closed') echo 'disabled'; ?>>
@@ -174,6 +177,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['user_id'])) {
                                     ?>
                                 </select>
                             </div>
+                            <?php
+                    }
+                            ?>
                             <br />
                             <br />
                             <button type="submit" class="btn btn-primary"  <?php if ($task['status'] === 'Closed') echo 'disabled'; ?>>Update Task</button>
