@@ -30,6 +30,7 @@
                     </li>
                     <?php
                     if ($accountType === 'supervisor') {
+                        //Users list should only be available to the supervisor
                     ?>
                     <li class="nav-item">
                         <a class="nav-link" href="users.php">

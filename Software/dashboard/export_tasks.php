@@ -1,12 +1,12 @@
 <?php
 session_start();
 
-// Check if the user is authenticated
+//Check if the user is authenticated
 if (!isset($_SESSION['user'])) {
     header('Location: ../');
     exit;
 }
-
+//Include the database connection file
 include '../backend/db.php';
 $userId = $_SESSION['user_id'];
 $accountType = $_SESSION['account_type'];
@@ -27,6 +27,7 @@ if (isset($_GET['delete_task']) && $_GET['delete_task'] === 'true' && isset($_GE
     exit;
 }
 
+//Initialize search and filter variables
 $searchQuery = '';
 $statusFilter = '';
 $dueDateOrder = '';
@@ -39,7 +40,7 @@ if (isset($_GET['status'])) {
 if (isset($_GET['due_date'])) {
     $dueDateOrder = $_GET['due_date'];
 }
-
+//Build the query
 $query = '';
 if ($accountType === 'supervisor') {
     // Fetch all tasks
@@ -86,13 +87,14 @@ if ($accountType === 'supervisor') {
 $stmt->execute();
 $result = $stmt->get_result();
 
+// Fetch the tasks from the result
 $tasks = [];
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         $tasks[] = $row;
     }
 }
-
+//Close the statement and database connection
 $stmt->close();
 $mysqli->close();
 // Generate CSV content
@@ -106,6 +108,7 @@ foreach ($tasks as $task) {
     fputcsv($output, $task);
 }
 
+// Close the output stream
 fclose($output);
 exit;
 ?>

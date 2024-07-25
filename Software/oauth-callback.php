@@ -1,9 +1,10 @@
 <?php
+//Include configuration file that contains OpenAuth credentials
 include 'backend/config.php'; // Contains OpenAuth credentials and database connection
 require 'vendor/autoload.php';
 
 use League\OAuth2\Client\Provider\Google;
-
+// Create a new Google OAuth2 provider instance with the necessary credentials
 $provider = new Google([
     'clientId'                => $clientId,
     'clientSecret'            => $clientSecret,
@@ -11,6 +12,7 @@ $provider = new Google([
     'scopes'                  => ['openid', 'profile', 'email']
 ]);
 
+//Start the session to manage OAuth2 state and user data
 session_start();
 
 if (empty($_GET['state']) || ($_GET['state'] !== $_SESSION['oauth2state'])) {
@@ -18,16 +20,19 @@ if (empty($_GET['state']) || ($_GET['state'] !== $_SESSION['oauth2state'])) {
     exit('Invalid state');
 }
 
+//Start the session to manage OAuth2 state and user data
 if (!isset($_GET['code'])) {
     header('Location: index.php');
     exit;
 }
 
 try {
+ //Get the access token using the authorization code
+
     $accessToken = $provider->getAccessToken('authorization_code', [
         'code' => $_GET['code'],
     ]);
-
+//Get owner's information using the access token
     $resourceOwner = $provider->getResourceOwner($accessToken);
     $userData = $resourceOwner->toArray();
     $_SESSION['user'] = $userData;

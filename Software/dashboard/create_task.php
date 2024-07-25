@@ -1,24 +1,31 @@
 <?php
-session_start();
+session_start(); //Start the session to manage user authentication
+// Check if the user is not logged in, redirect to the login page
 if (!isset($_SESSION['user'])) {
     header('Location: ../');
     exit;
 }
+//Include the database connection file
 require '../backend/db.php';
 $userId = $_SESSION['user_id'];
 $accountType = $_SESSION['account_type'];
 
+//Function to validate the task form data
 function validate_task_form($data) {
     $errors = [];
+    //Check if the title is provided
     if (empty($data['title'])) {
         $errors[] = 'Title is required.';
     }
+    //Check if the title is provided
     if (empty($data['description'])) {
         $errors[] = 'Description is required.';
     }
+    //Check if a valid due date is provided
     if (empty($data['due_date']) || !preg_match('/\d{4}-\d{2}-\d{2}/', $data['due_date'])) {
         $errors[] = 'Valid due date is required.';
     }
+    //Check if at least one user is assigned to the task
     if (empty($data['assigned_users']) || !is_array($data['assigned_users'])) {
         $errors[] = 'At least one assigned user is required.';
     }
@@ -26,8 +33,10 @@ function validate_task_form($data) {
 }
 
 
+//Check if at least one user is assigned to the task
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['user_id'])) {
     $errors = validate_task_form($_POST);
+    //If there are no errors, proceed to create a new task
     if (empty($errors)) {
         $title = $_POST['title'];
         $description = $_POST['description'];
@@ -55,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['user_id'])) {
             $stmt->fetch();
             @mail($email, "New Task Assigned", "A new task ".$title." has been assigned to you.");
         }
-
+//Redirect to the tasks page with a success message
  header('location:tasks.php?tast_created=true');exit;
     } else {
        

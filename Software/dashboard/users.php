@@ -8,6 +8,11 @@ if (!isset($_SESSION['user'])) {
 }
 $userId = $_SESSION['user_id'];
 $accountType = $_SESSION['account_type'];
+//Allow only the supervisor to access users list
+if($accountType != 'supervisor')
+{
+    header('location:index.php?error=You are not authorized to view the requested page');exit;
+}
 include '../backend/db.php';
 // Fetch all users
 $result = $mysqli->query("SELECT * FROM users");

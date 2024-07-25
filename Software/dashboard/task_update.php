@@ -45,6 +45,7 @@ while ($row = $assigned_users_result->fetch_assoc()) {
     $assigned_users[] = $row['user_id'];
 }
 
+//Function to validate the update form
 function validate_update_form($data) {
     $errors = [];
     if (empty($data['task_id']) || !is_numeric($data['task_id'])) {
@@ -66,6 +67,7 @@ function validate_update_form($data) {
     return $errors;
 }
 
+//Function to validate the update form
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['user_id'])) {
     $errors = validate_update_form($_POST);
     if (empty($errors)) {
@@ -76,15 +78,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['user_id'])) {
         $review_date = $_POST['review_date'];
         $assigned_users = $_POST['assigned_users'];
 
+        //Update the task
         $stmt = $mysqli->prepare("UPDATE tasks SET status = ?, due_date = ?, review_date = ? WHERE id = ?");
         $stmt->bind_param('sssi', $status, $due_date, $review_date, $task_id);
         $stmt->execute();
-
+        //Log the task update
         $stmt = $mysqli->prepare("INSERT INTO task_updates (task_id, update_text, updated_by) VALUES (?, ?, ?)");
         $stmt->bind_param('isi', $task_id, $progress_update, $_SESSION['user_id']);
         $stmt->execute();
 
-        // Update task assignments
+        // delete existing assigned users and reassign task to both exiting and newly selected users
         $mysqli->query("DELETE FROM task_assignments WHERE task_id = $task_id");
         $assign_stmt = $mysqli->prepare("INSERT INTO task_assignments (task_id, user_id) VALUES (?, ?)");
         foreach ($assigned_users as $user_id) {
